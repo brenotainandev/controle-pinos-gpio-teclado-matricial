@@ -41,6 +41,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-apt-
 
+      - name: Cache apt lists
+        uses: actions/cache@v3
+        with:
+          path: /var/lib/apt/lists
+          key: ${{ runner.os }}-apt-lists-${{ hashFiles('**/ci.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-lists-
+
       - name: Setup dependencies
         run: |
           sudo apt update
