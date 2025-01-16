@@ -16,14 +16,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup CMake
+      - name: Setup dependencies
         run: |
           sudo apt update
-          sudo apt install cmake gcc-arm-none-eabi
+          sudo apt install cmake gcc-arm-none-eabi -y
+
+      - name: Set up Pico SDK
+        run: |
+          git clone -b master https://github.com/raspberrypi/pico-sdk.git
+          cd pico-sdk
+          git submodule update --init
+          echo "export PICO_SDK_PATH=$PWD" >> $GITHUB_ENV
 
       - name: Build project
         run: |
           mkdir build
           cd build
-          cmake ..
+          cmake .. -DPICO_SDK_PATH=$PICO_SDK_PATH
           make
