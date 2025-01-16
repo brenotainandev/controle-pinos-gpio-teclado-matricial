@@ -1,0 +1,29 @@
+name: Build GPIO Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup CMake
+        run: |
+          sudo apt update
+          sudo apt install cmake gcc-arm-none-eabi
+
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
