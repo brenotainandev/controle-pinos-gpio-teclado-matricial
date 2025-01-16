@@ -16,18 +16,35 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup dependencies
-        run: |
-          sudo apt update
-          sudo apt install cmake gcc-arm-none-eabi -y
+      - name: Cache Pico SDK
+        uses: actions/cache@v3
+        with:
+          path: pico-sdk
+          key: ${{ runner.os }}-pico-sdk-${{ hashFiles('**/pico-sdk') }}
+          restore-keys: |
+            ${{ runner.os }}-pico-sdk-
 
       - name: Set up Pico SDK
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           git clone -b master https://github.com/raspberrypi/pico-sdk.git
           cd pico-sdk
           git submodule update --init
         env:
           PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk
+
+      - name: Cache apt packages
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/apt
+          key: ${{ runner.os }}-apt-${{ hashFiles('**/ci.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
+      - name: Setup dependencies
+        run: |
+          sudo apt update
+          sudo apt install cmake gcc-arm-none-eabi -y
 
       - name: Build project
         run: |
