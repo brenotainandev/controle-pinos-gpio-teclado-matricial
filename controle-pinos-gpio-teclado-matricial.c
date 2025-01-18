@@ -2,10 +2,11 @@
 #include "pico/stdlib.h"
 
 
-#define led_pin_red 13
-#define led_pin_blue 12
-#define led_pin_green 11
-#define buzzer_pin 27
+// Definição dos pinos de LEDs e buzzer
+#define LED_VERMELHO 13
+#define LED_AZUL 12
+#define LED_VERDE 11
+#define PINO_BUZZER 27
 
 char keypad[16] = {
   '1', '2', '3', 'A',
