@@ -38,6 +38,8 @@ void inicializar_teclado(int colunas[], int linhas[]) {
     }
 }
 
+// === Funções de Controle ===
+
 // Lê o teclado e retorna o caractere pressionado
 char ler_teclado(int colunas[], int linhas[], char mapa[]) {
     for (int linha = 0; linha < LINHAS; linha++) {
@@ -57,9 +59,28 @@ char ler_teclado(int colunas[], int linhas[], char mapa[]) {
     return 0; // Nenhuma tecla pressionada
 }
 
+// Pisca os LEDs com base no número de vezes
+void piscar_leds(int vezes) {
+    for (int i = 0; i < vezes; i++) {
+        gpio_put(LED_VERMELHO, 1);
+        gpio_put(LED_AZUL, 1);
+        gpio_put(LED_VERDE, 1);
+        sleep_ms(500);
+
+        gpio_put(LED_VERMELHO, 0);
+        gpio_put(LED_AZUL, 0);
+        gpio_put(LED_VERDE, 0);
+        sleep_ms(500);
+    }
+}
+
 int main(){
 
-  stdio_init_all();
+    printf("Inicializando o sistema...\n");
+    inicializar_leds(); // Configura os LEDs
+    inicializar_teclado(pinos_colunas, pinos_linhas); // Configura o teclado
+    stdio_init_all();
+
   while (true) {
     printf("Hello Wokwi! \n");
     sleep_ms(250);
