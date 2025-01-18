@@ -22,20 +22,21 @@ char mapa_teclado[16] = {
 int pinos_colunas[COLUNAS] = {3, 2, 1, 0};
 int pinos_linhas[LINHAS] = {8, 7, 6, 4};
 
-void kaypad_init(int colunas[4], int linhas[4]){
-  for (int i = 0; i < 4; i++){
-  // Colunas [entradas]
-  gpio_init(colunas[i]);
-  gpio_set_dir(colunas[i], GPIO_IN);
-  gpio_pull_up(colunas[i]); //Iniciando todos em nível alto
-  //Linahs [saidas]
-  gpio_init(linhas[i]);
-  gpio_set_dir(linhas[i], GPIO_OUT);
-  gpio_put(linhas[i], 1); //Iniciando todos em nível alto
-  }
+// Inicializa o teclado matricial
+void inicializar_teclado(int colunas[], int linhas[]) {
+    // Colunas [entradas]
+    for (int i = 0; i < LINHAS; i++) {
+        gpio_init(linhas[i]);
+        gpio_set_dir(linhas[i], GPIO_OUT);
+        gpio_put(linhas[i], 1); // Linha inicializada em HIGH
+    }
+    // Linhas [saídas]
+    for (int i = 0; i < COLUNAS; i++) {
+        gpio_init(colunas[i]);
+        gpio_set_dir(colunas[i], GPIO_IN);
+        gpio_pull_up(colunas[i]); // Coluna com pull-up ativado
+    }
 }
-//char read_kaypad(int colunas[4], int linhas[4],char keypad[16]){}
-
 
 int main(){
 
