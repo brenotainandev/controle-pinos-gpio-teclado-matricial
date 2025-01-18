@@ -38,6 +38,21 @@ void inicializar_teclado(int colunas[], int linhas[]) {
     }
 }
 
+// Inicializa os LEDs
+void inicializar_leds() {
+    gpio_init(LED_VERMELHO);
+    gpio_set_dir(LED_VERMELHO, GPIO_OUT);
+    gpio_put(LED_VERMELHO, 0);
+
+    gpio_init(LED_AZUL);
+    gpio_set_dir(LED_AZUL, GPIO_OUT);
+    gpio_put(LED_AZUL, 0);
+
+    gpio_init(LED_VERDE);
+    gpio_set_dir(LED_VERDE, GPIO_OUT);
+    gpio_put(LED_VERDE, 0);
+}
+
 // === Funções de Controle ===
 
 // Lê o teclado e retorna o caractere pressionado
@@ -75,12 +90,11 @@ void piscar_leds(int vezes) {
 }
 
 int main(){
-
-    printf("Inicializando o sistema...\n");
-    inicializar_leds(); // Configura os LEDs
     inicializar_teclado(pinos_colunas, pinos_linhas); // Configura o teclado
+    inicializar_leds(); // Configura os LEDs
     stdio_init_all();
 
+    printf("Sistema inicializado. Aguardando comandos...\n");
   while (true) {
     printf("Hello Wokwi! \n");
     sleep_ms(250);
