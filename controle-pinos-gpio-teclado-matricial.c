@@ -38,6 +38,25 @@ void inicializar_teclado(int colunas[], int linhas[]) {
     }
 }
 
+// Lê o teclado e retorna o caractere pressionado
+char ler_teclado(int colunas[], int linhas[], char mapa[]) {
+    for (int linha = 0; linha < LINHAS; linha++) {
+        gpio_put(linhas[linha], 0); // Define a linha como LOW
+
+        for (int coluna = 0; coluna < COLUNAS; coluna++) {
+            if (gpio_get(colunas[coluna]) == 0) { // Verifica se a tecla foi pressionada
+                while (gpio_get(colunas[coluna]) == 0); // Aguarda a tecla ser liberada
+                gpio_put(linhas[linha], 1); // Restaura a linha para HIGH
+                return mapa[linha * COLUNAS + coluna];
+            }
+        }
+
+        gpio_put(linhas[linha], 1); // Restaura a linha para HIGH
+    }
+
+    return 0; // Nenhuma tecla pressionada
+}
+
 int main(){
 
   stdio_init_all();
