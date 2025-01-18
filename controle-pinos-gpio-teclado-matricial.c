@@ -8,15 +8,19 @@
 #define LED_VERDE 11
 #define PINO_BUZZER 27
 
-char keypad[16] = {
+// Configuração do teclado matricial
+#define COLUNAS 4
+#define LINHAS 4
+
+char mapa_teclado[16] = {
   '1', '2', '3', 'A',
   '4', '5', '6', 'B',
   '7', '8', '9', 'C',
   '*', '0', '#', 'D'
 };
 
-int colunas[4] = {3,2,1,0};
-int linhas[4] = {8,7,6,4};
+int pinos_colunas[COLUNAS] = {3, 2, 1, 0};
+int pinos_linhas[LINHAS] = {8, 7, 6, 4};
 
 void kaypad_init(int colunas[4], int linhas[4]){
   for (int i = 0; i < 4; i++){
@@ -35,7 +39,6 @@ void kaypad_init(int colunas[4], int linhas[4]){
 
 int main(){
 
-  kaypad_init(colunas, linhas);
   stdio_init_all();
   while (true) {
     printf("Hello Wokwi! \n");
