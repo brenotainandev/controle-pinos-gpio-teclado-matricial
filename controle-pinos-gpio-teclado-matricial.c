@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 
-// Definição dos pinos de LEDs
+// Definição dos pinos de LEDs e buzzer
 #define LED_VERMELHO 13
 #define LED_AZUL 12
 #define LED_VERDE 11
+#define PINO_BUZZER 27
 
 // Configuração do teclado matricial
 char teclado[4][4] = {
