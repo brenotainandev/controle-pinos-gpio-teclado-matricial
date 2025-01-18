@@ -52,7 +52,6 @@ void kaypad_init(int colunas[4], int linhas[4]){
   gpio_init(linhas[i]);
   gpio_set_dir(linhas[i], GPIO_OUT);
   gpio_put(linhas[i], 1); //Iniciando todos em nível alto
-  printf("Valor de i: %d \n", i);
   }
 }
 
