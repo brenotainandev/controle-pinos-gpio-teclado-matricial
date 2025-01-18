@@ -59,6 +59,45 @@ void resetar_senha()
     modo_senha = false;
 }
 
+// Função para acender LEDs com base na tecla
+void acender_led(char tecla)
+{
+    switch (tecla)
+    {
+    case 'A':
+        gpio_put(LED_VERDE, 1); // Liga o LED verde
+        sleep_ms(500);
+        gpio_put(LED_VERDE, 0);
+        break;
+    case 'B':
+        gpio_put(LED_AZUL, 1); // Liga o LED azul
+        sleep_ms(500);
+        gpio_put(LED_AZUL, 0);
+        break;
+    case 'C':
+        gpio_put(LED_VERMELHO, 1); // Liga o LED vermelho
+        sleep_ms(500);
+        gpio_put(LED_VERMELHO, 0);
+        break;
+    case 'D':
+        gpio_put(LED_VERMELHO, 1); // Liga todos os LEDs
+        gpio_put(LED_VERDE, 1);
+        gpio_put(LED_AZUL, 1);
+        sleep_ms(500);
+        gpio_put(LED_VERMELHO, 0);
+        gpio_put(LED_VERDE, 0);
+        gpio_put(LED_AZUL, 0);
+        break;
+    default:
+        gpio_put(LED_VERMELHO, 0); // Desliga todos
+        gpio_put(LED_AZUL, 0);
+        gpio_put(LED_VERDE, 0);
+        sleep_ms(500);
+
+        break;
+    }
+}
+
 // Função para inicializar os pinos do teclado matricial
 void inicializar_teclado(int colunas[4], int linhas[4])
 {
@@ -68,7 +107,6 @@ void inicializar_teclado(int colunas[4], int linhas[4])
         gpio_init(colunas[i]);
         gpio_set_dir(colunas[i], GPIO_IN);
         gpio_pull_up(colunas[i]); // Configura pull-up interno
-
         // Configuração das linhas como saídas
         gpio_init(linhas[i]);
         gpio_set_dir(linhas[i], GPIO_OUT);
@@ -96,6 +134,7 @@ char ler_teclado()
     }
     return leitura; // Retorna o caractere pressionado
 }
+
 // Função principal
 int main()
 {
@@ -109,8 +148,10 @@ int main()
     // Configuração dos LEDs
     gpio_init(LED_VERMELHO);
     gpio_init(LED_VERDE);
+    gpio_init(LED_AZUL);
     gpio_set_dir(LED_VERMELHO, GPIO_OUT);
     gpio_set_dir(LED_VERDE, GPIO_OUT);
+    gpio_set_dir(LED_AZUL, GPIO_OUT);
 
     // Configuração do buzzer
     gpio_init(PINO_BUZZER);
@@ -176,6 +217,14 @@ int main()
                     resetar_senha();
                 }
                 break;
+            case 'A':
+                acender_led(tecla);
+            case 'B':
+                acender_led(tecla);
+            case 'C':
+                acender_led(tecla);
+            case 'D':
+                acender_led(tecla);
             }
         }
         sleep_ms(100); // Pequeno atraso
