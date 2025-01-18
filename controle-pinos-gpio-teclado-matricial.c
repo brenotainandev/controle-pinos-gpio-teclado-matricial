@@ -120,6 +120,21 @@ char ler_teclado() {
     return leitura; // Retorna o caractere pressionado
 }
 
+// Pisca os LEDs com base no número de vezes
+void piscar_leds(int vezes) {
+    for (int i = 0; i < vezes; i++) {
+        gpio_put(LED_VERMELHO, 1);
+        gpio_put(LED_AZUL, 1);
+        gpio_put(LED_VERDE, 1);
+        sleep_ms(500);
+
+        gpio_put(LED_VERMELHO, 0);
+        gpio_put(LED_AZUL, 0);
+        gpio_put(LED_VERDE, 0);
+        sleep_ms(500);
+    }
+}
+
 // Função principal
 int main() {
     // Inicialização
@@ -149,14 +164,31 @@ int main() {
                     }
                     break;
                 case '1':
+                    piscar_leds(1);
+                    break;
                 case '2':
+                    piscar_leds(2);
+                    break;
                 case '3':
+                    piscar_leds(3);
+                    break;
                 case '4':
+                    piscar_leds(4);
+                    break;
                 case '5':
+                    piscar_leds(5);
+                    break;
                 case '6':
+                    piscar_leds(6);
+                    break;
                 case '7':
+                    piscar_leds(7);
+                    break;
                 case '8':
+                    piscar_leds(8);
+                    break;
                 case '9':
+                    piscar_leds(9);
                     if (modo_senha && pos_senha < 4) {
                         senha_atual[pos_senha] = tecla - '0'; // Converte char para int
                         pos_senha++;
