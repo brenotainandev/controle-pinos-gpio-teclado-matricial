@@ -95,8 +95,15 @@ int main(){
     stdio_init_all();
 
     printf("Sistema inicializado. Aguardando comandos...\n");
-  while (true) {
-    printf("Hello Wokwi! \n");
-    sleep_ms(250);
-  }
+    while (true) {
+        char tecla = ler_teclado(pinos_colunas, pinos_linhas, mapa_teclado);
+
+        if (tecla >= '1' && tecla <= '9') { // Verifica se é uma tecla numérica
+            int vezes = tecla - '0'; // Converte o caractere para número
+            printf("Tecla %c pressionada. Piscando LEDs %d vez(es).\n", tecla, vezes);
+            piscar_leds(vezes);
+        }
+
+        sleep_ms(100); // Pequeno atraso para evitar múltiplas leituras acidentais
+    }
 }
