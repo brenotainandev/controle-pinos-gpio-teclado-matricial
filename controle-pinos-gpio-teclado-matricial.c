@@ -17,13 +17,27 @@ char keypad[16] = {
 int colunas[4] = {3,2,1,0};
 int linhas[4] = {8,7,6,4};
 
+void kaypad_init(int colunas[4], int linhas[4]){
+  for (int i = 0; i < 4; i++){
+  // Colunas [entradas]
+  gpio_init(colunas[i]);
+  gpio_set_dir(colunas[i], GPIO_IN);
+  gpio_pull_up(colunas[i]); //Iniciando todos em nível alto
+  //Linahs [saidas]
+  gpio_init(linhas[i]);
+  gpio_set_dir(linhas[i], GPIO_OUT);
+  gpio_put(linhas[i], 1); //Iniciando todos em nível alto
+  }
+}
+//char read_kaypad(int colunas[4], int linhas[4],char keypad[16]){}
 
-int main() {
+
+int main(){
+
+  kaypad_init(colunas, linhas);
   stdio_init_all();
-
-  
   while (true) {
-    printf("Hello, Wokwi!\n");
+    printf("Hello Wokwi! \n");
     sleep_ms(250);
   }
 }
