@@ -13,8 +13,8 @@ char teclado[4][4] = {
     {'4', '5', '6', 'B'},
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}};
-int pinos_colunas[4] = {3, 2, 1, 0};
-int pinos_linhas[4] = {8, 7, 6, 4};
+int pinos_colunas[4] = {5, 4, 3, 2};
+int pinos_linhas[4] = {9, 8, 7, 6};
 
 // Variáveis globais para senha
 int senha_atual[4] = {0};            // Array para armazenar a senha digitada
@@ -87,9 +87,12 @@ char ler_teclado()
 // Função principal
 int main()
 {
-    // Inicialização
-    inicializar_teclado(pinos_colunas, pinos_linhas);
+    // Inicializa todas as interfaces STDIO configuradas, como UART ou USB,
+    // permitindo o uso de funções de entrada e saída padrão (printf, scanf, ...).
+    // Deve ser chamada antes de qualquer operação que dependa de comunicação via STDIO.
+    // Inicialização do teclado
     stdio_init_all();
+    inicializar_teclado(pinos_colunas, pinos_linhas);
 
     // Configuração dos LEDs
     gpio_init(LED_VERMELHO);
