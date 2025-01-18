@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = "build/controle-pinos-gpio-teclado-matricial.uf2"
+elf = "build/controle-pinos-gpio-teclado-matricial.elf"

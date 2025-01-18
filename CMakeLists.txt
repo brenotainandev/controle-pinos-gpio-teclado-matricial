@@ -41,7 +41,7 @@ pico_set_program_name(controle-pinos-gpio-teclado-matricial "controle-pinos-gpio
 pico_set_program_version(controle-pinos-gpio-teclado-matricial "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(controle-pinos-gpio-teclado-matricial 0)
+pico_enable_stdio_uart(controle-pinos-gpio-teclado-matricial 1)
 pico_enable_stdio_usb(controle-pinos-gpio-teclado-matricial 1)
 
 # Add the standard library to the build
