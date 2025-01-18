@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-
 // Definição dos pinos de LEDs e buzzer
 #define LED_VERMELHO 13
 #define LED_AZUL 12
@@ -22,6 +21,19 @@ int senha_correta[4] = {1, 2, 3, 4}; // Senha correta (1234 como exemplo)
 int pos_senha = 0;                   // Posição atual da senha sendo digitada
 bool modo_senha = false;             // Flag para controlar se está no modo de inserção de senha
 char tecla;                          // Variável que armazena o caractere lido
+
+// Função para acionamento do buzzer
+void acionamento_buzzer(int duration)
+{
+    duration /= 2; // Divide a duração por 2 para gerar pulsos mais curtos
+    for (int i = 0; i < duration; i++)
+    {
+        gpio_put(PINO_BUZZER, 1);
+        sleep_us(500); // Meio período do ciclo
+        gpio_put(PINO_BUZZER, 0);
+        sleep_us(500); // Meio período do ciclo
+    }
+}
 
 // Função para verificar a senha
 bool verificar_senha()
@@ -90,8 +102,8 @@ int main()
     // Inicializa todas as interfaces STDIO configuradas, como UART ou USB,
     // permitindo o uso de funções de entrada e saída padrão (printf, scanf, ...).
     // Deve ser chamada antes de qualquer operação que dependa de comunicação via STDIO.
-    // Inicialização do teclado
     stdio_init_all();
+    // Inicialização do teclado
     inicializar_teclado(pinos_colunas, pinos_linhas);
 
     // Configuração dos LEDs
@@ -100,6 +112,10 @@ int main()
     gpio_set_dir(LED_VERMELHO, GPIO_OUT);
     gpio_set_dir(LED_VERDE, GPIO_OUT);
 
+    // Configuração do buzzer
+    gpio_init(PINO_BUZZER);
+    gpio_set_dir(PINO_BUZZER, GPIO_OUT);
+
     while (true)
     {
         tecla = ler_teclado();
@@ -107,7 +123,7 @@ int main()
         if (tecla != 0)
         { // Se alguma tecla foi pressionada
             printf("Tecla retornada: %c \n", tecla);
-
+            acionamento_buzzer(100); // Aciona o buzzer por 1s
             switch (tecla)
             {
             case '0':
