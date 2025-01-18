@@ -88,6 +88,38 @@ void acender_led(char tecla) {
     }
 }
 
+// Função para inicializar os pinos do teclado matricial
+void inicializar_teclado(int colunas[4], int linhas[4]) {
+    for (int i = 0; i < 4; i++) {
+        // Configuração das colunas como entradas
+        gpio_init(colunas[i]);
+        gpio_set_dir(colunas[i], GPIO_IN);
+        gpio_pull_up(colunas[i]); // Configura pull-up interno
+        
+        // Configuração das linhas como saídas
+        gpio_init(linhas[i]);
+        gpio_set_dir(linhas[i], GPIO_OUT);
+        gpio_put(linhas[i], 1); // Configura o estado inicial como HIGH
+    }
+}
+
+// Função para ler o caractere pressionado no teclado matricial
+char ler_teclado() {
+    char leitura = 0;
+    for (int linha = 0; linha < 4; linha++) {
+        gpio_put(pinos_linhas[linha], 0); // Define a linha como LOW
+        uint32_t estados_gpio = gpio_get_all();
+        for (int coluna = 0; coluna < 4; coluna++) {
+            if (!(estados_gpio & (1u << pinos_colunas[coluna]))) { // Verifica se a tecla foi pressionada
+                leitura = teclado[linha][coluna];
+                sleep_ms(100); // Debounce simples
+            }
+        }
+        gpio_put(pinos_linhas[linha], 1); // Restaura a linha para HIGH
+    }
+    return leitura; // Retorna o caractere pressionado
+}
+
 // Função principal
 int main() {
     // Inicialização
@@ -165,36 +197,4 @@ int main() {
         }
         sleep_ms(100); // Pequeno atraso
     }
-}
-
-// Função para inicializar os pinos do teclado matricial
-void inicializar_teclado(int colunas[4], int linhas[4]) {
-    for (int i = 0; i < 4; i++) {
-        // Configuração das colunas como entradas
-        gpio_init(colunas[i]);
-        gpio_set_dir(colunas[i], GPIO_IN);
-        gpio_pull_up(colunas[i]); // Configura pull-up interno
-        
-        // Configuração das linhas como saídas
-        gpio_init(linhas[i]);
-        gpio_set_dir(linhas[i], GPIO_OUT);
-        gpio_put(linhas[i], 1); // Configura o estado inicial como HIGH
-    }
-}
-
-// Função para ler o caractere pressionado no teclado matricial
-char ler_teclado() {
-    char leitura = 0;
-    for (int linha = 0; linha < 4; linha++) {
-        gpio_put(pinos_linhas[linha], 0); // Define a linha como LOW
-        uint32_t estados_gpio = gpio_get_all();
-        for (int coluna = 0; coluna < 4; coluna++) {
-            if (!(estados_gpio & (1u << pinos_colunas[coluna]))) { // Verifica se a tecla foi pressionada
-                leitura = teclado[linha][coluna];
-                sleep_ms(100); // Debounce simples
-            }
-        }
-        gpio_put(pinos_linhas[linha], 1); // Restaura a linha para HIGH
-    }
-    return leitura; // Retorna o caractere pressionado
 }
