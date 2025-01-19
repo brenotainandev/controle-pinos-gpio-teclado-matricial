@@ -55,7 +55,7 @@ void piscar_leds(int vezes);
 void acionamento_buzzer(int duracao_ms);
 void habilitar_exibicao();
 void desabilitar_exibicao();
-void tocar_musica();
+void tocar_musica(int pino);
 
 // === Função Principal ===
 int main() {
@@ -135,7 +135,7 @@ int main() {
 
                 case '#': 
                     printf("Tocando música do Mario...\n");
-                    tocar_musica_mario(PINO_BUZZER);
+                    tocar_musica(PINO_BUZZER);
                     break;
 
                 case 'A':
@@ -300,7 +300,7 @@ void desabilitar_exibicao() {
     exibicao_habilitada = false;
 }
 
-void tocar_musica_mario(int pino) {
+void tocar_musica(int pino) {
 
     // Definição da melodia: notas e suas durações
     int melodia[] = {
