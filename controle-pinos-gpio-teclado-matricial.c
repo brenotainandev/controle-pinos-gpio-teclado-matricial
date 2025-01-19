@@ -21,6 +21,23 @@ int senha_correta[4] = {1, 2, 3, 4}; // Senha correta (1234 como exemplo)
 int pos_senha = 0;                   // Posição atual da senha sendo digitada
 bool modo_senha = false;             // Flag para controlar se está no modo de inserção de senha
 char tecla;                          // Variável que armazena o caractere lido
+bool exibicao_habilitada = true;     // Flag para controlar a exibição de saída do teclado
+
+// Habilita o stdout para impressão no terminal
+void habilitar_exibicao()
+{
+    stdio_set_driver_enabled(&stdio_usb, true);
+    stdio_set_driver_enabled(&stdio_uart, true);
+    exibicao_habilitada = true;
+}
+
+// Desabilita o stdout para impressão no terminal
+void desabilitar_exibicao()
+{
+    stdio_set_driver_enabled(&stdio_usb, false);
+    stdio_set_driver_enabled(&stdio_uart, false);
+    exibicao_habilitada = false;
+}
 
 // Função para acionamento do buzzer
 void acionamento_buzzer(int duration)
@@ -138,9 +155,7 @@ char ler_teclado()
 // Função principal
 int main()
 {
-    // Inicializa todas as interfaces STDIO configuradas, como UART ou USB,
-    // permitindo o uso de funções de entrada e saída padrão (printf, scanf, ...).
-    // Deve ser chamada antes de qualquer operação que dependa de comunicação via STDIO.
+    // Inicialização do stdio
     stdio_init_all();
     // Inicialização do teclado
     inicializar_teclado(pinos_colunas, pinos_linhas);
@@ -210,7 +225,20 @@ int main()
                     }
                 }
                 break;
-            case '*': // Cancelar a entrada da senha
+            case '*':
+                // verifica se a exibição de saída do teclado está habilitada
+                if (exibicao_habilitada)
+                {
+                    printf("\nDesabilitando a exibição de saída do teclado\n");
+                    desabilitar_exibicao();
+                }
+                else
+                {
+                    habilitar_exibicao();
+                    printf("\nHabilitando a exibição de saída do teclado\n");
+                }
+                break;
+            case '#':
                 if (modo_senha)
                 {
                     printf("\nEntrada de senha cancelada\n");
@@ -219,12 +247,16 @@ int main()
                 break;
             case 'A':
                 acender_led(tecla);
+                break;
             case 'B':
                 acender_led(tecla);
+                break;
             case 'C':
                 acender_led(tecla);
+                break;
             case 'D':
                 acender_led(tecla);
+                break;
             }
         }
         sleep_ms(100); // Pequeno atraso
