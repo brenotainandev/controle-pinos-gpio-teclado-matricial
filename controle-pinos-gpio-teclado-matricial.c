@@ -31,12 +31,15 @@ void resetar_senha();
 void acender_led(char tecla);
 void inicializar_leds();
 void piscar_leds(int vezes);
+void acionamento_buzzer(int duracao_ms);
 
 // === Função Principal ===
 int main() {
     // Inicializações
     inicializar_teclado(pinos_colunas, pinos_linhas);
     inicializar_leds();
+    gpio_init(PINO_BUZZER);
+    gpio_set_dir(PINO_BUZZER, GPIO_OUT);
     stdio_init_all();
 
     printf("Sistema inicializado. Aguardando comandos...\n");
@@ -46,6 +49,9 @@ int main() {
 
         if (tecla != 0) { // Se alguma tecla foi pressionada
             printf("Tecla retornada: %c \n", tecla);
+
+            // Aciona o buzzer ao pressionar qualquer tecla
+            acionamento_buzzer(100); 
 
             switch (tecla) {
                 case '0': // Ativar modo senha
@@ -66,11 +72,13 @@ int main() {
                             if (pos_senha == 4) { // Quando 4 dígitos forem digitados
                                 if (verificar_senha()) {
                                     printf("Senha correta!\n");
+                                    acionamento_buzzer(500); // Bip mais longo para sucesso
                                     gpio_put(LED_VERDE, 1);
                                     sleep_ms(1000);
                                     gpio_put(LED_VERDE, 0);
                                 } else {
                                     printf("Senha incorreta!\n");
+                                    acionamento_buzzer(1500); // Bip longo para erro
                                     gpio_put(LED_VERMELHO, 1);
                                     sleep_ms(1000);
                                     gpio_put(LED_VERMELHO, 0);
@@ -87,8 +95,8 @@ int main() {
                     if (modo_senha) {
                         printf("Entrada de senha cancelada.\n");
                         resetar_senha();
+                        acionamento_buzzer(200); // Bip curto para cancelamento
                     }
-                    // caso não esteja no modo senha, pode chamar uma função para ativar o buzzer
                     break;
 
                 case 'A':
@@ -111,12 +119,9 @@ int main() {
 // Inicializa os pinos do teclado matricial
 void inicializar_teclado(int colunas[4], int linhas[4]) {
     for (int i = 0; i < 4; i++) {
-        // Configura as colunas como entradas
         gpio_init(colunas[i]);
         gpio_set_dir(colunas[i], GPIO_IN);
         gpio_pull_up(colunas[i]);
-
-        // Configura as linhas como saídas
         gpio_init(linhas[i]);
         gpio_set_dir(linhas[i], GPIO_OUT);
         gpio_put(linhas[i], 1);
@@ -127,16 +132,16 @@ void inicializar_teclado(int colunas[4], int linhas[4]) {
 char ler_teclado() {
     char leitura = 0;
     for (int linha = 0; linha < 4; linha++) {
-        gpio_put(pinos_linhas[linha], 0); // Define a linha como LOW
+        gpio_put(pinos_linhas[linha], 0);
         for (int coluna = 0; coluna < 4; coluna++) {
-            if (gpio_get(pinos_colunas[coluna]) == 0) { // Verifica se a tecla foi pressionada
+            if (gpio_get(pinos_colunas[coluna]) == 0) {
                 leitura = teclado[linha][coluna];
-                while (gpio_get(pinos_colunas[coluna]) == 0); // Aguarda a tecla ser liberada
-                gpio_put(pinos_linhas[linha], 1); // Restaura a linha para HIGH
+                while (gpio_get(pinos_colunas[coluna]) == 0);
+                gpio_put(pinos_linhas[linha], 1);
                 return leitura;
             }
         }
-        gpio_put(pinos_linhas[linha], 1); // Restaura a linha para HIGH
+        gpio_put(pinos_linhas[linha], 1);
     }
     return leitura;
 }
@@ -216,5 +221,16 @@ void piscar_leds(int vezes) {
         gpio_put(LED_AZUL, 0);
         gpio_put(LED_VERMELHO, 0);
         sleep_ms(500);
+    }
+}
+
+// Acionamento do buzzer por uma duração específica (em milissegundos)
+void acionamento_buzzer(int duracao_ms) {
+    duracao_ms /= 2;
+    for (int i = 0; i < duracao_ms; i++) {
+        gpio_put(PINO_BUZZER, 1);
+        sleep_us(500);
+        gpio_put(PINO_BUZZER, 0);
+        sleep_us(500);
     }
 }

@@ -58,7 +58,7 @@
         "id": "bz1",
         "top": 31.2,
         "left": 433.8,
-        "attrs": { "volume": "0.1" }
+        "attrs": { "volume": "0.2" }
       }
     ],
     "connections": [
@@ -72,14 +72,14 @@
       [ "r3:1", "led3:A", "green", [ "v0" ] ],
       [ "led2:C", "led1:C", "black", [ "v0", "h-38", "v-48" ] ],
       [ "led3:C", "led2:C", "black", [ "v0", "h-38", "v-57.6" ] ],
-      [ "pico:GP0", "keypad1:C4", "green", [ "h0" ] ],
-      [ "keypad1:C3", "pico:GP1", "green", [ "v0" ] ],
-      [ "keypad1:C2", "pico:GP2", "green", [ "v0" ] ],
-      [ "keypad1:C1", "pico:GP3", "green", [ "v0" ] ],
-      [ "keypad1:R4", "pico:GP4", "green", [ "v0" ] ],
-      [ "keypad1:R3", "pico:GP6", "green", [ "v0" ] ],
-      [ "keypad1:R2", "pico:GP7", "green", [ "v0" ] ],
-      [ "keypad1:R1", "pico:GP8", "green", [ "v0" ] ],
+      [ "pico:GP2", "keypad1:C4", "green", [ "h0" ] ],
+      [ "pico:GP3", "keypad1:C3", "green", [ "v0" ] ],
+      [ "pico:GP4", "keypad1:C2", "green", [ "v0" ] ],
+      [ "pico:GP5", "keypad1:C1", "green", [ "v0" ] ],
+      [ "pico:GP6", "keypad1:R4", "green", [ "v0" ] ],
+      [ "pico:GP7", "keypad1:R3", "green", [ "v0" ] ],
+      [ "pico:GP8", "keypad1:R2", "green", [ "v0" ] ],
+      [ "pico:GP9", "keypad1:R1", "green", [ "v0" ] ],
       [ "pico:GND.4", "led3:C", "black", [ "h0" ] ],
       [ "pico:GND.7", "bz1:1", "black", [ "h0" ] ],
       [ "bz1:2", "pico:GP27", "red", [ "v0" ] ]
