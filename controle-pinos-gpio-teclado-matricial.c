@@ -6,24 +6,24 @@
 #define LED_AZUL 12
 #define LED_VERDE 11
 #define PINO_BUZZER 27
-#define NOTA_C4 262   // Dó (C4)
-#define NOTA_D4 294   // Ré (D4)
-#define NOTA_E4 330   // Mi (E4)
-#define NOTA_F4 349   // Fá (F4)
-#define NOTA_G4 392   // Sol (G4)
-#define NOTA_A4 440   // Lá (A4)
-#define NOTA_B4 494   // Si (B4)
-#define NOTA_C5 523   // Dó (C5)
-#define NOTA_D5 587   // Ré (D5)
-#define NOTA_E5 659   // Mi (E5)
-#define NOTA_F5 698   // Fá (F5)
-#define NOTA_G5 784   // Sol (G5)
-#define NOTA_A5 880   // Lá (A5)
-#define NOTA_B5 988   // Si (B5)
-#define NOTA_G3 196   // Sol (G3)
-#define NOTA_E3 164   // Mi (E3)
-#define NOTA_A3 220   // Lá (A3)
-#define NOTA_B3 246   // Si (B3)
+#define NOTA_C4 262
+#define NOTA_D4 294
+#define NOTA_E4 330
+#define NOTA_F4 349
+#define NOTA_G4 392
+#define NOTA_A4 440
+#define NOTA_B4 494
+#define NOTA_C5 523
+#define NOTA_D5 587
+#define NOTA_E5 659
+#define NOTA_F5 698
+#define NOTA_G5 784
+#define NOTA_A5 880
+#define NOTA_B5 988
+#define NOTA_G3 196
+#define NOTA_E3 164
+#define NOTA_A3 220
+#define NOTA_B3 246
 #define NOTA_PAUSA 0
 
 
