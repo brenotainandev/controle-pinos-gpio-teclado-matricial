@@ -7,6 +7,26 @@
 #define LED_VERDE 11
 #define PINO_BUZZER 27
 
+// Definição das frequências das notas musicais
+#define NOTA_C4 262
+#define NOTA_D4 294
+#define NOTA_E4 330
+#define NOTA_F4 349
+#define NOTA_G4 392
+#define NOTA_A4 440
+#define NOTA_B4 494
+#define NOTA_C5 523
+#define NOTA_D5 587
+#define NOTA_E5 659
+#define NOTA_F5 698
+#define NOTA_G5 784
+#define NOTA_A5 880
+#define NOTA_B5 988
+#define NOTA_G3 196   
+#define NOTA_E3 164   
+#define NOTA_A3 220  
+#define NOTA_B3 246   
+#define NOTA_PAUSA 0  
 // Configuração do teclado matricial
 char teclado[4][4] = {
     {'1', '2', '3', 'A'},
@@ -35,6 +55,7 @@ void piscar_leds(int vezes);
 void acionamento_buzzer(int duracao_ms);
 void habilitar_exibicao();
 void desabilitar_exibicao();
+void tocar_musica(int pino);
 
 // === Função Principal ===
 int main() {
@@ -113,7 +134,8 @@ int main() {
                     break;
 
                 case '#': 
-                    printf("Nenhuma ação associada à tecla #.\n");
+                    printf("Tocando música.\n");
+                    tocar_musica(PINO_BUZZER);
                     break;
 
                 case 'A':
@@ -276,4 +298,49 @@ void desabilitar_exibicao() {
     stdio_set_driver_enabled(&stdio_usb, false);
     stdio_set_driver_enabled(&stdio_uart, false);
     exibicao_habilitada = false;
+}
+
+void tocar_musica(int pino) {
+    int melodia[] = {
+        NOTA_E4, NOTA_E4, NOTA_PAUSA, NOTA_E4,
+        NOTA_C4, NOTA_E4, NOTA_G4, NOTA_PAUSA,
+        NOTA_G3, NOTA_PAUSA, NOTA_C4, NOTA_PAUSA,
+        NOTA_G3, NOTA_PAUSA, NOTA_E3, NOTA_A3,
+        NOTA_B3, NOTA_A3, NOTA_A3, NOTA_G3,
+        NOTA_E4, NOTA_G4, NOTA_A4, NOTA_F4,
+        NOTA_G4, NOTA_PAUSA, NOTA_E4, NOTA_C4,
+        NOTA_D4, NOTA_B3, NOTA_PAUSA
+    };
+
+    int duracoes[] = {
+        125, 125, 125, 125,
+        125, 125, 375, 375,
+        375, 375, 125, 125,
+        125, 125, 125, 125,
+        125, 125, 125, 125,
+        125, 125, 125, 125,
+        125, 125, 125, 125,
+        125, 125, 125
+    };
+
+    int tamanho_melodia = sizeof(melodia) / sizeof(melodia[0]);
+
+    for (int i = 0; i < tamanho_melodia; i++) {
+        if (melodia[i] == NOTA_PAUSA) {
+    
+            sleep_ms(duracoes[i]);
+        } else {
+         
+            int periodo = 1000000 / melodia[i]; 
+            int ciclos = melodia[i] * duracoes[i] / 1000; 
+
+            for (int j = 0; j < ciclos; j++) {
+                gpio_put(pino, 1); 
+                sleep_us(periodo / 2);
+                gpio_put(pino, 0); 
+                sleep_us(periodo / 2);
+            }
+        }
+        sleep_ms(50);
+    }
 }
