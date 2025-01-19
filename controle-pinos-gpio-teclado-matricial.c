@@ -17,11 +17,12 @@ char teclado[4][4] = {
 int pinos_colunas[4] = {3, 2, 1, 0};
 int pinos_linhas[4] = {8, 7, 6, 4};
 
-// Variáveis globais para senha
+// Variáveis globais
 int senha_atual[4] = {0};      // Armazena a senha digitada
-int senha_correta[4] = {1, 2, 3, 4}; // Senha correta (1234)
+int senha_correta[4] = {1, 2, 3, 4}; // Senha correta
 int pos_senha = 0;             // Posição atual da senha
 bool modo_senha = false;       // Controle do modo de senha
+bool exibicao_habilitada = true; // Controle da exibição de saída do teclado
 
 // Prototipação das funções
 void inicializar_teclado(int colunas[4], int linhas[4]);
@@ -32,6 +33,8 @@ void acender_led(char tecla);
 void inicializar_leds();
 void piscar_leds(int vezes);
 void acionamento_buzzer(int duracao_ms);
+void habilitar_exibicao();
+void desabilitar_exibicao();
 
 // === Função Principal ===
 int main() {
@@ -48,10 +51,12 @@ int main() {
         char tecla = ler_teclado();
 
         if (tecla != 0) { // Se alguma tecla foi pressionada
-            printf("Tecla retornada: %c \n", tecla);
+            if (exibicao_habilitada) {
+                printf("Tecla retornada: %c \n", tecla);
+            }
 
             // Aciona o buzzer ao pressionar qualquer tecla
-            acionamento_buzzer(100); 
+            acionamento_buzzer(100);
 
             switch (tecla) {
                 case '0': // Ativar modo senha
@@ -91,12 +96,24 @@ int main() {
                     }
                     break;
 
-                case '*': // Cancelar entrada de senha
-                    if (modo_senha) {
-                        printf("Entrada de senha cancelada.\n");
+                case '*': // Cancelar ou alternar exibição
+                    if (modo_senha) { // Sair do modo senha
+                        printf("Saindo do modo senha. Entrada de senha cancelada.\n");
                         resetar_senha();
                         acionamento_buzzer(200); // Bip curto para cancelamento
+                    } else { // Alternar exibição de saída
+                        if (exibicao_habilitada) {
+                            printf("Desabilitando exibição de saída.\n");
+                            desabilitar_exibicao();
+                        } else {
+                            habilitar_exibicao();
+                            printf("Habilitando exibição de saída.\n");
+                        }
                     }
+                    break;
+
+                case '#': 
+                    printf("Nenhuma ação associada à tecla #.\n");
                     break;
 
                 case 'A':
@@ -107,7 +124,9 @@ int main() {
                     break;
 
                 default:
-                    printf("Nenhuma ação associada à tecla %c.\n", tecla);
+                    if (exibicao_habilitada) {
+                        printf("Nenhuma ação associada à tecla %c.\n", tecla);
+                    }
             }
         }
         sleep_ms(100);
@@ -233,4 +252,18 @@ void acionamento_buzzer(int duracao_ms) {
         gpio_put(PINO_BUZZER, 0);
         sleep_us(500);
     }
+}
+
+// Habilita o stdout para impressão no terminal
+void habilitar_exibicao() {
+    stdio_set_driver_enabled(&stdio_usb, true);
+    stdio_set_driver_enabled(&stdio_uart, true);
+    exibicao_habilitada = true;
+}
+
+// Desabilita o stdout para impressão no terminal
+void desabilitar_exibicao() {
+    stdio_set_driver_enabled(&stdio_usb, false);
+    stdio_set_driver_enabled(&stdio_uart, false);
+    exibicao_habilitada = false;
 }
