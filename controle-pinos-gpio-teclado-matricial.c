@@ -149,19 +149,29 @@ void inicializar_teclado(int colunas[4], int linhas[4]) {
 
 // Lê o caractere pressionado no teclado matricial
 char ler_teclado() {
+    static char ultima_tecla = 0; // Armazena a última tecla pressionada
     char leitura = 0;
+
     for (int linha = 0; linha < 4; linha++) {
-        gpio_put(pinos_linhas[linha], 0);
+        gpio_put(pinos_linhas[linha], 0); // Define a linha como LOW
         for (int coluna = 0; coluna < 4; coluna++) {
-            if (gpio_get(pinos_colunas[coluna]) == 0) {
-                leitura = teclado[linha][coluna];
-                while (gpio_get(pinos_colunas[coluna]) == 0);
-                gpio_put(pinos_linhas[linha], 1);
-                return leitura;
+            if (gpio_get(pinos_colunas[coluna]) == 0) { // Verifica se a tecla foi pressionada
+                sleep_ms(20); // Atraso para estabilização (debounce)
+                if (gpio_get(pinos_colunas[coluna]) == 0) { // Verifica novamente
+                    leitura = teclado[linha][coluna];
+                    if (leitura != ultima_tecla) { // Só registra se for uma tecla nova
+                        ultima_tecla = leitura;
+                        while (gpio_get(pinos_colunas[coluna]) == 0); // Aguarda liberação
+                        gpio_put(pinos_linhas[linha], 1);
+                        return leitura; // Retorna a tecla
+                    }
+                }
             }
         }
-        gpio_put(pinos_linhas[linha], 1);
+        gpio_put(pinos_linhas[linha], 1); // Restaura a linha para HIGH
     }
+
+    ultima_tecla = 0; // Reseta a última tecla caso nenhuma tecla esteja pressionada
     return leitura;
 }
 
