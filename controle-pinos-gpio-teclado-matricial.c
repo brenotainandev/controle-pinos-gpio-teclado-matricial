@@ -6,6 +6,26 @@
 #define LED_AZUL 12
 #define LED_VERDE 11
 #define PINO_BUZZER 27
+#define NOTA_C4 262   // Dó (C4)
+#define NOTA_D4 294   // Ré (D4)
+#define NOTA_E4 330   // Mi (E4)
+#define NOTA_F4 349   // Fá (F4)
+#define NOTA_G4 392   // Sol (G4)
+#define NOTA_A4 440   // Lá (A4)
+#define NOTA_B4 494   // Si (B4)
+#define NOTA_C5 523   // Dó (C5)
+#define NOTA_D5 587   // Ré (D5)
+#define NOTA_E5 659   // Mi (E5)
+#define NOTA_F5 698   // Fá (F5)
+#define NOTA_G5 784   // Sol (G5)
+#define NOTA_A5 880   // Lá (A5)
+#define NOTA_B5 988   // Si (B5)
+#define NOTA_G3 196   // Sol (G3)
+#define NOTA_E3 164   // Mi (E3)
+#define NOTA_A3 220   // Lá (A3)
+#define NOTA_B3 246   // Si (B3)
+#define NOTA_PAUSA 0
+
 
 // Configuração do teclado matricial
 char teclado[4][4] = {
@@ -35,6 +55,7 @@ void piscar_leds(int vezes);
 void acionamento_buzzer(int duracao_ms);
 void habilitar_exibicao();
 void desabilitar_exibicao();
+void tocar_musica();
 
 // === Função Principal ===
 int main() {
@@ -113,7 +134,8 @@ int main() {
                     break;
 
                 case '#': 
-                    printf("Nenhuma ação associada à tecla #.\n");
+                    printf("Tocando música do Mario...\n");
+                    tocar_musica_mario(PINO_BUZZER);
                     break;
 
                 case 'A':
@@ -276,4 +298,70 @@ void desabilitar_exibicao() {
     stdio_set_driver_enabled(&stdio_usb, false);
     stdio_set_driver_enabled(&stdio_uart, false);
     exibicao_habilitada = false;
+}
+
+void tocar_musica_mario(int pino) {
+
+    // Definição da melodia: notas e suas durações
+    int melodia[] = {
+        NOTA_E4, NOTA_E4, NOTA_PAUSA, NOTA_E4,
+        NOTA_C4, NOTA_E4, NOTA_G4, NOTA_PAUSA,
+        NOTA_G3, NOTA_PAUSA, NOTA_C4, NOTA_PAUSA,
+        NOTA_G3, NOTA_PAUSA, NOTA_E3, NOTA_A3,
+        NOTA_B3, NOTA_A3, NOTA_A3, NOTA_G3,
+        NOTA_E4, NOTA_G4, NOTA_A4, NOTA_F4,
+        NOTA_G4, NOTA_PAUSA, NOTA_E4, NOTA_C4,
+        NOTA_D4, NOTA_B3, NOTA_PAUSA,
+
+        NOTA_E4, NOTA_E4, NOTA_PAUSA, NOTA_E4,
+        NOTA_C4, NOTA_E4, NOTA_G4, NOTA_PAUSA,
+        NOTA_G3, NOTA_PAUSA, NOTA_C4, NOTA_PAUSA,
+        NOTA_G3, NOTA_PAUSA, NOTA_E3, NOTA_A3,
+        NOTA_B3, NOTA_A3, NOTA_A3, NOTA_G3,
+        NOTA_E4, NOTA_G4, NOTA_A4, NOTA_F4,
+        NOTA_G4, NOTA_PAUSA, NOTA_E4, NOTA_C4,
+        NOTA_D4, NOTA_B3, NOTA_PAUSA,
+
+        NOTA_A4, NOTA_B4, NOTA_A4, NOTA_G4, 
+        NOTA_F4, NOTA_E4, NOTA_D4, NOTA_C4
+    };
+
+    // Duracoes das notas (em milissegundos)
+    int duracoes[] = {
+        250, 250, 125, 250,
+        250, 250, 500, 500,
+        500, 500, 250, 250,
+        250, 250, 250, 250,
+        250, 250, 250, 250,
+        250, 250, 250, 250,
+        250, 250, 250, 250,
+
+        250, 250, 125, 250,
+        250, 250, 500, 500,
+        500, 500, 250, 250,
+        250, 250, 250, 250,
+        250, 250, 250, 250,
+        250, 250, 250, 250,
+
+        250, 250, 250, 250
+    };
+
+    int tamanho_melodia = sizeof(melodia) / sizeof(melodia[0]);
+
+    for (int i = 0; i < tamanho_melodia; i++) {
+        if (melodia[i] == NOTA_PAUSA) {
+            sleep_ms(duracoes[i]);
+        } else {
+            int periodo = 1000000 / melodia[i];
+            int ciclos = melodia[i] * duracoes[i] / 1000;
+
+            for (int j = 0; j < ciclos; j++) {
+                gpio_put(pino, 1);
+                sleep_us(periodo / 2);
+                gpio_put(pino, 0);
+                sleep_us(periodo / 2);
+            }
+        }
+        sleep_ms(50);
+    }
 }
