@@ -83,11 +83,11 @@ projeto_gpio/
 4. **Botão B:** Acende a luz da led azul.
 5. **Botão C:** Acende a luz da led vermelha.
 6. **Botão D:** Acende as luzes das tres ledsapenas uma vez.
-7. **Botão *:** Habilitar/Desabilitar a exibição de saída.
+7. **Botão '*':** Habilitar/Desabilitar a exibição de saída.
 8. **Botão #:** Tocar a música do Mario.
 
 ## Vídeo de Apresentação
 
-[Link para o vídeo]
+-Vídeo: [YouTube](https://youtu.be/ny9ieWJVeYY)
 
 
