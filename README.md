@@ -39,7 +39,7 @@ Este projeto foi realizado como parte da Unidade 4 - Microcontroladores, com foc
   * **Plataforma de hospedagem:** GitHub
 
 ## Estrutura do Projeto
-
+```
 projeto_gpio/
 ├── .github
 │   └── workflows
@@ -71,7 +71,7 @@ projeto_gpio/
 ├── pico_sdk_import.cmake
 ├── README.md
 └── wokwi.toml
-
+```
 ## Como Utilizar (Simulação Wokwi)
 
 # Teclado matricial 4x4
@@ -83,11 +83,11 @@ projeto_gpio/
 4. **Botão B:** Acende a luz da led azul.
 5. **Botão C:** Acende a luz da led vermelha.
 6. **Botão D:** Acende as luzes das tres ledsapenas uma vez.
-7. **Botão *:** Habilitar/Desabilitar a exibição de saída.
+7. **Botão '*':** Habilitar/Desabilitar a exibição de saída.
 8. **Botão #:** Tocar a música do Mario.
 
 ## Vídeo de Apresentação
 
-[Link para o vídeo]
+-Vídeo: [YouTube](https://youtu.be/ny9ieWJVeYY)
 
 
