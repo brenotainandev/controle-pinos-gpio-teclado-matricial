@@ -39,7 +39,7 @@ Este projeto foi realizado como parte da Unidade 4 - Microcontroladores, com foc
   * **Plataforma de hospedagem:** GitHub
 
 ## Estrutura do Projeto
-
+```
 projeto_gpio/
 ├── .github
 │   └── workflows
@@ -71,7 +71,7 @@ projeto_gpio/
 ├── pico_sdk_import.cmake
 ├── README.md
 └── wokwi.toml
-
+```
 ## Como Utilizar (Simulação Wokwi)
 
 # Teclado matricial 4x4
